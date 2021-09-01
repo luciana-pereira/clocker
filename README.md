@@ -15,7 +15,7 @@ O produto tem como objetivo oferecer uma ferramenta que auxilie o usuário a rea
 
 A imagem abaixo ilustra a ultima versão do prótótipo, seu resultado final das páginas de como devem ficar.
 
-![image](prototipo.png)
+![image](/prototipo.jpg)
 
 &nbsp;
 ## Autoria 
