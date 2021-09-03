@@ -12,6 +12,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup'
 import Logo  from '../components/Logo/logo.svg';
 import Image from 'next/image';
+import firebase from '../config/firebase';
+import Link from 'next/link';
 
 let schema = yup.object().shape({
   name: yup.string().required,
@@ -30,8 +32,23 @@ const validationSchema = yup.object().shape({
 });
 
 const Home = () => {
-  const formik = useFormik({
-    onSubmit: () => { },
+  const { 
+    values, 
+    errors, 
+    touched, 
+    handleChange, 
+    handleBlur, 
+    handleSubmit,
+    isSubmitting
+  } = useFormik({
+    onSubmit: async (values, form) => {
+      try {
+        const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+        // console.log(user)
+      } catch (error) {
+        // console.log('ERROR:', error)
+      }
+    },
     validationSchema,
     initialValues: {
       email: '',
@@ -50,30 +67,30 @@ const Home = () => {
       <Box>
         <FormControl id="email" p={5} isRequired>
           <FormLabel>Email</FormLabel>
-          <Input 
+          <Input size="lg" 
             type="email" 
-            value={formik.values.email} 
-            onChange={formik.handleChange} 
-            onBlur={formik.handleBlur}
+            value={values.email} 
+            onChange={handleChange} 
+            onBlur={handleBlur}
           />
-          {formik.touched.email && 
+          {touched.email && 
             <FormHelperText textColor="#e74c3c">
-              {formik.errors.email}
+              {errors.email}
             </FormHelperText>
           }
         </FormControl>
 
         <FormControl id="password" p={5} isRequired>
           <FormLabel>Senha</FormLabel>
-          <Input 
+          <Input size="lg" 
             type="password" 
-            value={formik.values.password} 
-            onChange={formik.handleChange} 
-            onBlur={formik.handleBlur}
+            value={values.password} 
+            onChange={handleChange} 
+            onBlur={handleBlur}
           />
-          {formik.touched.password && 
+          {touched.password && 
             <FormHelperText textColor="#e74c3c">
-              {formik.errors.senha}
+              {errors.password}
             </FormHelperText>
           }
         </FormControl>
@@ -81,24 +98,34 @@ const Home = () => {
         <Box display="flex" flexDirection="row">
           <Text>clocker.work/</Text>
           <FormControl id="username" p={4} isRequired>
-            <Input 
+            <Input size="lg" 
               type="username" 
               placeholder="Usuário" 
-              value={formik.values.username} 
-              onChange={formik.handleChange} 
-              onBlur={formik.handleBlur}
+              value={values.username} 
+              onChange={handleChange} 
+              onBlur={handleBlur}
             />
-            {formik.touched.username && 
+            {touched.username && 
               <FormHelperText textColor="#e74c3c">
-                {formik.errors.username}
+                {errors.username}
               </FormHelperText>}
           </FormControl>
         </Box>
 
         <Box p={4}>
-          <Button width="100%" background="#4E84D5" color="white">Entrar</Button>
+          <Button 
+            width="100%" 
+            background="#4E84D5" 
+            color="white"
+            onClick={handleSubmit}
+            isLoading={isSubmitting}
+          >
+            Entrar
+          </Button>
         </Box>
       </Box>
+
+      <Link href="/signup">Ainda não tem uma conta? Cadastre-se</Link>
     </Container>
   )
 };
