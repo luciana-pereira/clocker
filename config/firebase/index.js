@@ -1,14 +1,17 @@
-import firebase from 'firebase/app'
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
 const firebaseConfig = {
-    apiKey: "AIzaSyBttFvZGWPKauXbna8mLT0lX4grJp3I948",
-    authDomain: "clocker-work-0.firebaseapp.com",
-    projectId: "clocker-work-0",
-    storageBucket: "clocker-work-0.appspot.com",
-    messagingSenderId: "593838061521",
-    appId: "1:593838061521:web:ad90d4243430fac5d712f0",
-    measurementId: "G-DEBRD17HQV"
-};
+    apiKey: process.env.NEXT_PUBLIC_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
+}
   
 export default firebase.apps.length
     ? firebase.app()
-    : firebase.initializeApp(firebaseConfig);
+    : firebase.initializeApp(firebaseConfig)
+
