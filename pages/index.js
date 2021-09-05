@@ -15,20 +15,9 @@ import Image from 'next/image';
 import firebase from '../config/firebase';
 import Link from 'next/link';
 
-let schema = yup.object().shape({
-  name: yup.string().required,
-  age: yup.number().required().positive().integer(),
-  email: yup.string().email(),
-  website: yup.string().url(),
-  createdOn: yup.date().default(function() {
-    return new Date();
-  }),
-});
-
 const validationSchema = yup.object().shape({
   email: yup.string().email('E-mail inválido').required('Preenchimento obrigatório'),
-  password: yup.string().required('Preenchimento obrigatório'),
-  username: yup.string().required('Preenchimento obrigatório'),
+  password: yup.string().required('Preenchimento obrigatório')
 });
 
 const Home = () => {
@@ -44,7 +33,7 @@ const Home = () => {
     onSubmit: async (values, form) => {
       try {
         const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
-        // console.log(user)
+        console.log(user)
       } catch (error) {
         // console.log('ERROR:', error)
       }
@@ -95,23 +84,6 @@ const Home = () => {
           }
         </FormControl>
 
-        <Box display="flex" flexDirection="row">
-          <Text>clocker.work/</Text>
-          <FormControl id="username" p={4} isRequired>
-            <Input size="lg" 
-              type="username" 
-              placeholder="Usuário" 
-              value={values.username} 
-              onChange={handleChange} 
-              onBlur={handleBlur}
-            />
-            {touched.username && 
-              <FormHelperText textColor="#e74c3c">
-                {errors.username}
-              </FormHelperText>}
-          </FormControl>
-        </Box>
-
         <Box p={4}>
           <Button 
             width="100%" 
@@ -128,6 +100,6 @@ const Home = () => {
       <Link href="/signup">Ainda não tem uma conta? Cadastre-se</Link>
     </Container>
   )
-};
+}
 
 export default Home;
